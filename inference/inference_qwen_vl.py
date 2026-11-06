@@ -7,7 +7,7 @@ import argparse
 from qwen_vl_utils import process_vision_info
 from transformers import Qwen2_5_VLForConditionalGeneration, Qwen3VLForConditionalGeneration, AutoProcessor
 
-from utils.utils import extract_view
+from utils.utils import extract_view, default_attn_implementation
 
 def get_rank_and_world():
     if "RANK" in os.environ:
@@ -53,7 +53,7 @@ class Qwen2_5VL:
     ):
         self.model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
             model_path,
-            attn_implementation="flash_attention_2",
+            attn_implementation=default_attn_implementation(),
             dtype="auto",
             device_map=device,
         ).eval()
@@ -141,7 +141,7 @@ class Qwen3VL:
     ):
         self.model = Qwen3VLForConditionalGeneration.from_pretrained(
             model_path,
-            attn_implementation="flash_attention_2",
+            attn_implementation=default_attn_implementation(),
             torch_dtype="auto",
             device_map="auto",
         )
@@ -295,10 +295,14 @@ def main(args):
 
     processed_count = 0
     if len(test_gt) > 0:
-        if "qwen2_5" in args.model_path:
+        model_name = args.model_path.lower().replace(".", "_")
+        if "qwen2_5" in model_name:
             model = Qwen2_5VL(model_path=args.model_path)
-        elif "qwen3" in args.model_path:
+        elif "qwen3" in model_name:
             model = Qwen3VL(model_path=args.model_path)
+        else:
+            raise ValueError(f"Cannot infer Qwen version from model path '{args.model_path}'; "
+                             "it must contain 'qwen2_5' / 'qwen2.5' or 'qwen3'.")
 
     for qa_pair in test_gt:
         data_id = qa_pair["id"]
@@ -324,7 +328,7 @@ def main(args):
         response, history = model.chat(query=query, imgs=[img])
         result["response"] = response
 
-        if "3B" in args.model_path:
+        if isinstance(model, Qwen2_5VL) and "3b" in args.model_path.lower():
             pred = model.chat(
                 query="Give me only the final answer letter from your previous reply.",
                 history=history, get_logits=True)
@@ -374,9 +378,9 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Video inference with Qwen-VL.")
     parser.add_argument("--model_path", type=str, required=True, help="Path to the model.")
-    parser.add_argument("--test_gt_path", type=str, default="../annotations/OpenView_bench_anno.json", help="Path to the test ground truth file.")
+    parser.add_argument("--test_gt_path", type=str, default="../annotations/OpenView_bench.json", help="Path to the test ground truth file.")
     parser.add_argument("--output_json", type=str, help="Path to the output JSON file.")
-    parser.add_argument("--data_path", type=str, default="../dataset/data/test", help="Path to the Panorama Images.")
+    parser.add_argument("--data_path", type=str, default="../data/test", help="Path to the Panorama Images.")
     args = parser.parse_args()
     
     if args.output_json is None:

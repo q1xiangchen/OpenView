@@ -1,8 +1,9 @@
 # path config
-data_dir: "../dataset/data"
+data_dir: "../data"
 out_dir: "../output/trainset" # save the proposal results
 cache_dir: "../output/cache" # save the caption (patch analyses) and summary (panorama analysis) results
 annotation_path: "../annotations/OpenView_dataset.csv"
+save_path: "../output/OpenView_generated_vqa.json" # final refined VQA annotations (stage 4)
 
 # patch config
 patch_cols: 4

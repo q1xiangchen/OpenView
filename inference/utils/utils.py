@@ -7,6 +7,15 @@ from .pinhole_projector import rotation_matrix, extract_pinhole_view
 from .variables import ViewCaption, PanoSummary
 
 
+def default_attn_implementation():
+    """Use FlashAttention-2 if installed, otherwise PyTorch SDPA."""
+    try:
+        import flash_attn  # noqa: F401
+        return "flash_attention_2"
+    except ImportError:
+        return "sdpa"
+
+
 def uv2pose(uv):
     """
     Convert normalized uv coordinates to yaw, pitch, roll in degrees.

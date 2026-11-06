@@ -1,0 +1,23 @@
+# OpenView data construction pipeline (vLLM + Qwen2.5-VL-72B-Instruct).
+# For benchmark inference and evaluation, use requirements.txt.
+# Python 3.10+ (tested with 3.12), CUDA 12.x. Install in a separate environment from requirements.txt.
+vllm==0.10.1.1
+torch==2.7.1
+torchvision==0.22.1
+transformers==4.55.2
+qwen-vl-utils==0.0.11
+numpy==2.2.6
+pillow==11.3.0
+opencv-python==4.12.0.88
+opencv-python-headless==4.12.0.88
+pandas==2.3.2
+jsonlines==4.0.0
+json5==0.12.1
+pyyaml==6.0.2
+pydantic==2.11.7
+tqdm==4.67.1
+# Transitive dependencies pinned to the tested environment
+openai==1.107.0
+protobuf==6.32.0
+fastapi==0.116.1
+mistral_common==1.8.3

@@ -245,7 +245,7 @@ if __name__ == "__main__":
     parser.add_argument("--base_url", type=str, help="Base URL for the API.")
     parser.add_argument("--model", type=str, required=True, help="Model name.")
     parser.add_argument("--output_json", type=str, help="Path to the output JSON file.")
-    parser.add_argument("--data_path", type=str, default="../dataset/data/test", help="Path to the Panorama Images.")
+    parser.add_argument("--data_path", type=str, default="../data/test", help="Path to the Panorama Images.")
     parser.add_argument("--num_threads", type=int, default=8, help="Number of threads for parallel processing.")
     args = parser.parse_args()
 

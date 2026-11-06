@@ -24,6 +24,9 @@ def parse_response(raw_response):
         response = "Bad format"
     return response
 
+def percent(numerator, denominator):
+    return f"{numerator / denominator * 100}%" if denominator else "N/A"
+
 def main(args):
     with open(args.output_path, "r") as f:
         data = json.load(f)
@@ -59,17 +62,17 @@ def main(args):
             incorrect_ids.append(question_id)
 
     print(f"Total: {total}")
-    print(f"Directional Accuracy: {directional_acc / directional_total * 100}%")
-    print(f"Contextual Accuracy: {contextual_acc / contextual_total * 100}%")
-    print(f"Choice Accuracy: {accuracy / total * 100}%")
+    print(f"Directional Accuracy: {percent(directional_acc, directional_total)}")
+    print(f"Contextual Accuracy: {percent(contextual_acc, contextual_total)}")
+    print(f"Choice Accuracy: {percent(accuracy, total)}")
     print(f"Bad format: {bad_format}")
 
     # save the accuracy
     with open(args.output_path[:-5] + f"/choice_acc.txt", "w") as f:
         f.write(f"Total: {total}\n")
-        f.write(f"Directional Accuracy: {directional_acc / directional_total * 100}%\n")
-        f.write(f"Contextual Accuracy: {contextual_acc / contextual_total * 100}%\n")
-        f.write(f"Choice Accuracy: {accuracy / total * 100}%\n")
+        f.write(f"Directional Accuracy: {percent(directional_acc, directional_total)}\n")
+        f.write(f"Contextual Accuracy: {percent(contextual_acc, contextual_total)}\n")
+        f.write(f"Choice Accuracy: {percent(accuracy, total)}\n")
         f.write(f"Bad format: {bad_format}\n")
         f.write(f"Incorrect IDs: {incorrect_ids}\n")
 

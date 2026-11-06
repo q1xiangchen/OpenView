@@ -2,6 +2,7 @@ import os
 import json
 import random
 import argparse
+from pathlib import Path
 from tqdm import tqdm
 from multiprocessing import Pool, cpu_count
 from utils import extract_view
@@ -10,7 +11,7 @@ def process_item(item):
     """Process a single item in a worker process"""
     try:
         # extract the question image
-        image_path = extract_view(item, save_dir=f"./data/{suffix}")
+        image_path = extract_view(item, save_dir=f"../data/{suffix}")
         patch_images = [image_path]
 
         options = [item["option_" + letter] for letter in "abcde"]
@@ -18,7 +19,7 @@ def process_item(item):
         image_tokens = "<image>\n" * len(patch_images)
         qa_obj = {
             "id": item['id'],
-            "images": patch_images,
+            "image": patch_images,
             "conversations": [{
                 "from": "human",
                 "value": (
@@ -73,10 +74,12 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input_file", type=str, help="Path to input JSON file")
-    parser.add_argument("--output_file", type=str, default="./converted_training_set/", help="Path to output JSON file")
+    parser.add_argument("--input_file", type=str, required=True, help="Path to input JSON file")
+    parser.add_argument("--output_file", type=str, help="Path to output JSON file (default: <input-stem>_converted.json beside the input)")
     args = parser.parse_args()
 
-    args.output_file = args.output_file + args.input_file.split('/')[-1]
-    os.makedirs(os.path.dirname(args.output_file), exist_ok=True)
+    if args.output_file is None:
+        input_path = Path(args.input_file)
+        args.output_file = str(input_path.with_name(f"{input_path.stem}_converted.json"))
+    Path(args.output_file).parent.mkdir(parents=True, exist_ok=True)
     main(args)

@@ -19,7 +19,7 @@ def process_pano(pano_info, cfg, backend, question_type, overwrite=False):
 
     # get pano info
     pano_id = Path(pano_path).stem
-    patch_prefix = f"{cfg["patch_cols"]}x{cfg["patch_rows"]}"
+    patch_prefix = f"{cfg['patch_cols']}x{cfg['patch_rows']}"
     
     # overwrite with cache directory if exists
     cache_dir = Path(cfg["cache_dir"]) / pano_id / patch_prefix / backend

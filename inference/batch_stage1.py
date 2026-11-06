@@ -12,7 +12,7 @@ import pandas as pd
 from utils.parser import parser
 
 ######## modify the following variables to fit your own situation ########
-data_root = Path("../dataset/data")
+data_root = Path("../data")
 meta_file = Path("../annotations/OpenView_dataset_sources.csv")
 output_jsonl = Path("../output/stage1_result.jsonl")
 

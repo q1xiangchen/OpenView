@@ -35,7 +35,7 @@ def project(img_pano, pose, fov_deg, out_size, fov_type="horizontal"):
     img_pinhole = extract_pinhole_view(img_pano, fov_deg=fov_deg, out_size=out_size, cam_rot=R, fov_type=fov_type)
     return img_pinhole
 
-def extract_view(proposal, save_dir="./datasets/temp"):
+def extract_view(proposal, save_dir="../data/temp"):
     """
     Extract the view from the panorama image.
     Input:
@@ -53,7 +53,13 @@ def extract_view(proposal, save_dir="./datasets/temp"):
     if os.path.exists(image_path):
         return image_path
 
-    pano_path = os.path.join("./datasets", proposal["pano_path"])
+    # pano_path may be given as "<source>/<file>" or "./data/<source>/<file>"; resolve it under ../data
+    rel_path = os.path.normpath(proposal["pano_path"])
+    if rel_path.startswith("data" + os.sep):
+        rel_path = rel_path[len("data" + os.sep):]
+    pano_path = os.path.join("../data", rel_path)
+    if not os.path.exists(pano_path):
+        raise FileNotFoundError(f"Panorama not found: {pano_path}")
     u_norm = float(proposal["u_norm"])
     v_norm = float(proposal["v_norm"])
     fov = float(proposal["diag_fov"])

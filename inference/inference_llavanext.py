@@ -273,9 +273,9 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Video inference with LLaVA-Next.")
     parser.add_argument("--model_path", type=str, required=True, help="Path to the model.")
-    parser.add_argument("--test_gt_path", type=str, default="../annotations/OpenView_bench_anno.json", help="Path to the test ground truth file.")
+    parser.add_argument("--test_gt_path", type=str, default="../annotations/OpenView_bench.json", help="Path to the test ground truth file.")
     parser.add_argument("--output_json", type=str, help="Path to the output JSON file.")
-    parser.add_argument("--data_path", type=str, default="../dataset/data/test", help="Path to the Panorama Images.")
+    parser.add_argument("--data_path", type=str, default="../data/test", help="Path to the Panorama Images.")
     args = parser.parse_args()
     
     if args.output_json is None:

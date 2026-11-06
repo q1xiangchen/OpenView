@@ -1,2 +1,6 @@
 # These files or folder should not appear in the final release
-dataset/data
+/data
+.DS_Store
+__pycache__/
+*.pyc
+/results/

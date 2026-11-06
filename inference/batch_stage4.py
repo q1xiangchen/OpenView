@@ -20,7 +20,7 @@ def process_pano(pano_path, cfg, question_type):
     # Stage 4: proposal refiner
     # get pano info
     pano_id = Path(pano_path).stem
-    patch_prefix = f"{cfg["patch_cols"]}x{cfg["patch_rows"]}"
+    patch_prefix = f"{cfg['patch_cols']}x{cfg['patch_rows']}"
     backend = cfg["agent_config"]["model_id"].split("/")[-1]
     
     # overwrite with cache directory if exists
@@ -45,7 +45,7 @@ def main(args):
     cfg = load_config(path=args.config_path)
     data_dir = cfg["data_dir"]
     question_types = cfg["question_types"]
-    save_path = os.path.join("./annotations/training_set", f"16k_{cfg["agent_config"]["model_id"].split("/")[-1]}_v4_01.json")
+    save_path = cfg.get("save_path", "../output/OpenView_generated_vqa.json")
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
 
     print(f"[INFO] Config: {cfg}")
