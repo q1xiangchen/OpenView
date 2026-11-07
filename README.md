@@ -19,7 +19,7 @@
 
 <p align="center">
     <a href="https://arxiv.org/abs/2512.18563">📄 Paper</a>  |
-    🌐 Project Page (coming soon)  |
+    <a href="https://openview-2026.github.io/">🌐 Project Page</a>  |
     <a href="https://huggingface.co/datasets/openview2026/OpenView_data">🤗 Dataset &amp; Benchmark</a>
 </p>
 
